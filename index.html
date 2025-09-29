@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>O Teu Negócio de Sonho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-yellow': '#FACC15',
+              'brand-dark': '#111827',
+            },
+            animation: {
+              scroll: 'scroll 60s linear infinite',
+            },
+            keyframes: {
+              scroll: {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+      }
+    </style>
+    <!-- Carregar React, ReactDOM e Babel para que o browser consiga ler o código -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brand-dark text-white">
+    <div id="root"></div>
+    
+    <!-- Todo o código da aplicação está agora aqui dentro -->
+    <script type="text/babel">
+      // --- COMPONENTES AUXILIARES ---
+
+      const CTAButton = ({ children, className = '' }) => (
+        <a
+          href="https://buy.stripe.com/14AaEX7LXe2zghA9MN5sA07"
+          className={`block w-full max-w-md mx-auto text-center bg-brand-yellow text-brand-dark font-bold text-xl md:text-2xl py-4 px-8 rounded-lg shadow-lg shadow-yellow-500/30 transform transition-transform duration-300 hover:scale-105 hover:bg-yellow-300 ${className}`}
+        >
+          {children}
+        </a>
+      );
+
+      const Section = ({ children, className = '', ...rest }) => (
+        <section className={`py-16 md:py-24 ${className}`} {...rest}>
+          <div className="container mx-auto px-6 max-w-4xl">
+            {children}
+          </div>
+        </section>
+      );
+
+      const CheckIcon = () => (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-yellow flex-shrink-0 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+      );
+
+      const FAQItem = ({ question, answer }) => {
+          const [isOpen, setIsOpen] = React.useState(false);
+          return (
+              <div className="border-b border-gray-700 py-4">
+                  <button onClick={() => setIsOpen(!isOpen)} className="w-full text-left flex justify-between items-center">
+                      <h3 className="text-lg font-bold">{question}</h3>
+                      <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                      </span>
+                  </button>
+                  {isOpen && <p className="mt-4 text-gray-300">{answer}</p>}
+              </div>
+          );
+      };
+
+      // --- CONSTANTES DE CONTEÚDO ---
+      const faqs = [
+          { question: "Preciso de experiência para começar?", answer: "Absolutamente não! O método foi desenhado para iniciantes completos. Vamos guiar-te passo a passo, desde o zero absoluto até teres o teu negócio a funcionar e a gerar rendimento." },
+          { question: "Quanto tempo preciso de dedicar por dia?", answer: "No início, recomendamos dedicar 1 a 2 horas por dia para montar a estrutura do teu negócio. Depois de tudo configurado, a gestão pode levar menos de uma hora diária." },
+          { question: "Os resultados são garantidos?", answer: "Garantimos que te vamos dar todas as ferramentas, estratégias e suporte necessários para teres sucesso. No entanto, os teus resultados dependem diretamente da tua aplicação e consistência em seguir o método." },
+          { question: "Tenho acesso imediato após o pagamento?", answer: "Sim! Assim que o pagamento for confirmado, receberás imediatamente um email com todos os dados de acesso ao material e as instruções para acederes ao suporte." },
+      ];
+
+      const TestimonialCarousel = () => {
+          const trackRef = React.useRef(null);
+
+          const handleTouchStart = () => {
+              if (trackRef.current) {
+                  trackRef.current.style.animationPlayState = 'paused';
+              }
+          };
+
+          const handleTouchEnd = () => {
+              if (trackRef.current) {
+                  trackRef.current.style.animationPlayState = 'running';
+              }
+          };
+          
+          const testimonials = [
+            { src: "https://i.postimg.cc/C5qqRYtc/final1.png", alt: "Testimonial from Bruno Alves showing earnings" },
+            { src: "https://i.postimg.cc/Dz6R84bw/final2.png", alt: "Testimonial from Pedro Barbosa showing 100% profile completion" },
+            { src: "https://i.postimg.cc/vH9YDX88/final3.png", alt: "Testimonial from Jotta Leiria showing €173.20 earnings" },
+            { src: "https://i.postimg.cc/vZtGtB6p/final4.png", alt: "Testimonial from Mariana Gouveia showing €741.27 balance" },
+            { src: "https://i.postimg.cc/0yPsjsHZ/final5.png", alt: "Testimonial from Miguel showing a sales graph peaking at €3,226" },
+            { src: "https://i.postimg.cc/zX1m2N55/final6.png", alt: "Testimonial from Bruno F. showing over €1,471 in credits" },
+            { src: "https://i.postimg.cc/tCbftzt4/final7.png", alt: "Testimonial from Ana Silva showing packed boxes and success in 3 days" },
+            { src: "https://i.postimg.cc/L53x0rB6/final8.png", alt: "Testimonial showing $120.00 in earnings" },
+            { src: "https://i.postimg.cc/0yBc3Gmm/final9.png", alt: "Text testimonial from Duda praising the course" },
+            { src: "https://i.postimg.cc/ydFjkwGX/final10.png", alt: "Testimonial showing success in contracting clients" },
+          ];
+
+          const duplicatedTestimonials = [...testimonials, ...testimonials];
+
+          return (
+              <div 
+                  className="w-full overflow-hidden relative"
+                  style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}
+              >
+                  <div
+                      ref={trackRef}
+                      className="flex w-max animate-scroll hover:[animation-play-state:paused]"
+                      onTouchStart={handleTouchStart}
+                      onTouchEnd={handleTouchEnd}
+                  >
+                      {duplicatedTestimonials.map((testimonial, index) => (
+                          <div key={index} className="flex-shrink-0 p-3 h-[400px] md:h-[500px]">
+                              <img 
+                                  src={testimonial.src} 
+                                  alt={testimonial.alt} 
+                                  className="h-full w-auto object-cover rounded-lg shadow-lg"
+                              />
+                          </div>
+                      ))}
+                  </div>
+              </div>
+          );
+      };
+
+
+      // --- COMPONENTE PRINCIPAL APP ---
+
+      function App() {
+        return (
+          <div className="bg-brand-dark">
+            
+            {/* Hero Section */}
+            <header className="pt-24 pb-16 text-center bg-gray-900">
+              <div className="container mx-auto px-6 max-w-4xl">
+                <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-tight">
+                  O Método Simples Para Faturares <span className="text-brand-yellow">Os Teus Primeiros 100€/dia</span> Online
+                </h1>
+                <p className="mt-6 text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">
+                  Descobre o passo a passo exato para criares o teu negócio online do zero, mesmo que sejas um completo iniciante e sem precisares de aparecer.
+                </p>
+                <div className="mt-10">
+                  <CTAButton>QUERO ACESSO IMEDIATO</CTAButton>
+                  <p className="mt-4 text-sm text-gray-400">Acesso 100% seguro e imediato.</p>
+                </div>
+              </div>
+            </header>
+
+            <main>
+              {/* Problem/Agitation Section */}
+              <Section className="bg-brand-dark">
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Estás Cansado de Viver Preso a um Ciclo Sem Fim?</h2>
+                  <div className="grid md:grid-cols-2 gap-8 text-lg">
+                      <div className="bg-gray-800 p-6 rounded-lg border border-red-500/50">
+                          <p className="text-red-400 font-bold mb-2">❌ Viver de salário em salário, sem conseguir poupar.</p>
+                          <p className="text-gray-300">Sentes que trabalhas o mês todo apenas para pagar contas, sem nunca sobrar dinheiro para o que realmente importa?</p>
+                      </div>
+                      <div className="bg-gray-800 p-6 rounded-lg border border-red-500/50">
+                          <p className="text-red-400 font-bold mb-2">❌ Não ter tempo para ti, para a tua família e amigos.</p>
+                          <p className="text-gray-300">A tua vida resume-se a casa-trabalho-casa, e sentes que estás a perder os melhores momentos?</p>
+                      </div>
+                      <div className="bg-gray-800 p-6 rounded-lg border border-red-500/50">
+                          <p className="text-red-400 font-bold mb-2">❌ Sentir-se perdido, sem um plano para o futuro.</p>
+                          <p className="text-gray-300">Vês outros a ter sucesso online, mas não fazes ideia de como começar ou que caminho seguir?</p>
+                      </div>
+                      <div className="bg-gray-800 p-6 rounded-lg border border-red-500/50">
+                          <p className="text-red-400 font-bold mb-2">❌ Ter medo de arriscar e de falhar.</p>
+                          <p className="text-gray-300">A incerteza paralisa-te e impede-te de dar o primeiro passo em direção a uma vida com mais liberdade?</p>
+                      </div>
+                  </div>
+                   <p className="text-center mt-12 text-2xl font-bold">
+                    Imagina se pudesses quebrar esse ciclo... para sempre.
+                  </p>
+              </Section>
+
+              {/* What You'll Get Section */}
+              <Section className="bg-gray-900">
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Apresento-te o <span className="text-brand-yellow">O Teu Negócio de Sonho</span></h2>
+                <p className="text-center text-xl text-gray-300 max-w-3xl mx-auto mb-12">O único guia de que precisas para construir múltiplas fontes de rendimento, passo a passo, de forma simples e direta ao ponto. Sem rodeios, apenas o que funciona em Portugal.</p>
+                <div className="bg-gray-800 p-8 rounded-lg border border-gray-700 space-y-6">
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">Amazon KDP:</span> Cria e vende livros e produtos digitais lucrativos usando ferramentas gratuitas, sem precisares de aparecer.</span></div>
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">Vinted para Lucrar:</span> Vende rapidamente e evita avaliações negativas com estratégias que funcionam mesmo sem experiência.</span></div>
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">Marketing de Afiliados:</span> Promove produtos e ganha comissões sem falar com ninguém - com exemplos práticos.</span></div>
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">Freelancing de Sucesso:</span> Transforma as tuas habilidades em rendimento, encontra clientes e define os teus próprios preços.</span></div>
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">eCommerce Gratuito:</span> Monta a tua loja online sem custos mensais e sem complicações técnicas (Dropshipping incluído).</span></div>
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">Negócios Físicos Simples:</span> Descobre como comecei uma empresa de limpezas do zero e como podes replicar o modelo para ganhar dinheiro de forma prática e realista.</span></div>
+                    <div className="flex items-start"><CheckIcon /><span><span className="font-bold">Mentalidade Anti-Fracasso:</span> Evita os erros que fazem 90% dos iniciantes desistir antes mesmo de começarem.</span></div>
+                </div>
+              </Section>
+              
+              {/* Bonus Section */}
+              <Section className="bg-brand-dark">
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">E Ainda Recebes Este Bónus Exclusivo...</h2>
+                  <div className="bg-gray-800 p-8 rounded-lg border-2 border-dashed border-brand-yellow text-center">
+                      <h3 className="text-2xl font-bold text-brand-yellow">BÓNUS REVELADO: O Segredo Para Nunca Pagares Pela Tua Presença Online</h3>
+                      <p className="text-lg mt-4 text-gray-300 max-w-3xl mx-auto">Vou ensinar-te o método exato que eu uso para teres o teu <span className="font-bold">endereço .com profissional</span>, o teu <span className="font-bold">email de marca</span> e o <span className="font-bold">alojamento do teu site</span>... sem gastares um único cêntimo em anuidades.</p>
+                      <p className="text-lg mt-2 text-gray-300 max-w-3xl mx-auto">É o pequeno "truque" que as empresas de alojamento não querem que saibas para teres a tua "casa" na internet de borla, para sempre.</p>
+                      <p className="mt-6 text-2xl font-bold">Em vez de gastares <span className="line-through text-red-400">€100 todos os anos</span>... vais poupar esse dinheiro.</p>
+                  </div>
+              </Section>
+              
+              {/* Testimonials Section */}
+              <Section className="bg-gray-900 !px-0 max-w-full">
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Resultados Reais dos Nossos Alunos</h2>
+                  <TestimonialCarousel />
+              </Section>
+              
+              {/* Offer Section */}
+              <Section id="oferta" className="bg-brand-dark">
+                  <div className="bg-gray-800 border-4 border-brand-yellow rounded-lg p-8 md:p-12 text-center shadow-2xl shadow-yellow-500/20">
+                      <h2 className="text-4xl md:text-5xl font-black uppercase">O Teu Acesso a Tudo Isto</h2>
+                      <p className="mt-4 text-xl text-gray-300">Tudo o que precisas para finalmente alcançares a tua liberdade financeira e de tempo está aqui.</p>
+                      
+                      <div className="my-8 text-left max-w-lg mx-auto space-y-4">
+                          <p className="flex items-center"><CheckIcon />Acesso vitalício ao método "O Teu Negócio de Sonho".</p>
+                          <p className="flex items-center"><CheckIcon />Todos os módulos com o passo a passo completo.</p>
+                          <p className="flex items-center"><CheckIcon />Estratégias testadas e validadas no mercado português.</p>
+                          <p className="flex items-center"><CheckIcon />Atualizações futuras sem custos adicionais.</p>
+                          <p className="flex items-center text-brand-yellow font-bold"><CheckIcon />BÓNUS: Método Secreto Para Ter Domínio, Email e Alojamento Grátis (Poupança Anual de €100).</p>
+                      </div>
+
+                      <div className="my-8">
+                          <p className="text-2xl text-gray-400 line-through">Valor Real: €297</p>
+                          <p className="text-5xl md:text-7xl font-bold my-2">Apenas €97</p>
+                          <p className="text-lg text-gray-300 mb-4">(Pagamento único)</p>
+                          <div className="bg-gray-900 py-3 px-6 rounded-lg inline-block border border-gray-700">
+                              <p className="text-xl font-semibold">
+                                  Ou paga em <span className="text-brand-yellow">3x de €32,33</span> sem juros com Klarna
+                              </p>
+                          </div>
+                      </div>
+                      
+                      <CTAButton>SIM, QUERO GARANTIR O MEU ACESSO!</CTAButton>
+
+                  </div>
+              </Section>
+              
+              {/* FAQ Section */}
+              <Section className="bg-brand-dark">
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Perguntas Frequentes</h2>
+                  <div className="max-w-3xl mx-auto">
+                      {faqs.map((faq, index) => (
+                          <FAQItem key={index} question={faq.question} answer={faq.answer} />
+                      ))}
+                  </div>
+              </Section>
+              
+              {/* Final CTA Section */}
+              <Section className="bg-gray-900 text-center">
+                  <h2 className="text-3xl md:text-4xl font-bold max-w-3xl mx-auto">A Escolha é Tua: Continuar a Sonhar ou Começar a Construir?</h2>
+                  <p className="mt-6 text-xl text-gray-300 max-w-2xl mx-auto">
+                      Podes fechar esta página e continuar na mesma situação, ou podes tomar a decisão de investir em ti e no teu futuro por menos do que o preço de um jantar.
+                  </p>
+                  <div className="mt-10">
+                      <CTAButton>QUERO MUDAR A MINHA VIDA AGORA</CTAButton>
+                      <p className="mt-4 text-sm text-gray-400">Oferta por tempo limitado. O preço pode subir a qualquer momento.</p>
+                  </div>
+              </Section>
+
+            </main>
+            
+            <footer className="text-center py-8 bg-black text-gray-500 text-sm">
+              <p>&copy; 2025 O Teu Negócio de Sonho. Todos os direitos reservados.</p>
+            </footer>
+          </div>
+        );
+      }
+
+      // --- RENDERIZAR A APP ---
+      const rootElement = document.getElementById('root');
+      if (!rootElement) {
+        throw new Error("Could not find root element to mount to");
+      }
+
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
